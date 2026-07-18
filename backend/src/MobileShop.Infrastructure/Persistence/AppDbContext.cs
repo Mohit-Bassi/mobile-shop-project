@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MobileShop.Domain.Entities;
 
 namespace MobileShop.Infrastructure.Persistence;
@@ -23,5 +24,20 @@ public class AppDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
+
+        if (Database.ProviderName == "Microsoft.EntityFrameworkCore.Sqlite")
+        {
+            // SQLite has no native decimal type and can't ORDER BY the TEXT representation EF
+            // Core stores decimals as by default. Tests run against SQLite for speed, so convert
+            // decimal columns to double there; SQL Server (dev/prod) keeps native decimal(10,2).
+            foreach (var property in modelBuilder.Model.GetEntityTypes()
+                         .SelectMany(t => t.GetProperties())
+                         .Where(p => p.ClrType == typeof(decimal) || p.ClrType == typeof(decimal?)))
+            {
+                property.SetValueConverter(property.ClrType == typeof(decimal)
+                    ? new ValueConverter<decimal, double>(v => (double)v, v => (decimal)v)
+                    : new ValueConverter<decimal?, double?>(v => v == null ? null : (double)v, v => v == null ? null : (decimal)v));
+            }
+        }
     }
 }
