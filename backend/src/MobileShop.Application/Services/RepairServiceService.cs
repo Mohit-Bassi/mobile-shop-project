@@ -18,4 +18,19 @@ public class RepairServiceService : IRepairServiceService
 
     public Task<RepairServiceDto?> GetActiveByIdAsync(int repairServiceId, CancellationToken ct) =>
         _repository.GetActiveByIdAsync(repairServiceId, ct);
+
+    public Task<List<RepairServiceDto>> GetAllAsync(CancellationToken ct) =>
+        _repository.GetAllAsync(ct);
+
+    public Task<RepairServiceDto?> GetByIdAsync(int repairServiceId, CancellationToken ct) =>
+        _repository.GetByIdAsync(repairServiceId, ct);
+
+    public Task<int> CreateAsync(AdminRepairServiceRequest request, CancellationToken ct) =>
+        _repository.CreateAsync(request, ct);
+
+    public Task<bool> UpdateAsync(int repairServiceId, AdminRepairServiceRequest request, CancellationToken ct) =>
+        _repository.UpdateAsync(repairServiceId, request, ct);
+
+    public Task<bool> DeleteAsync(int repairServiceId, CancellationToken ct) =>
+        _repository.DeleteAsync(repairServiceId, ct);
 }

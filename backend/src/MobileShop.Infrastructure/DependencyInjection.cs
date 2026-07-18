@@ -38,6 +38,8 @@ public static class DependencyInjection
         services.AddScoped<IAccessoryRepository, AccessoryRepository>();
         services.AddScoped<ICategoryRepository, CategoryRepository>();
         services.AddScoped<IRepairServiceRepository, RepairServiceRepository>();
+        services.AddScoped<IInquiryRepository, InquiryRepository>();
+        services.AddScoped<IDashboardRepository, DashboardRepository>();
 
         services.AddScoped<IImageStorageService, ImageStorageService>();
 

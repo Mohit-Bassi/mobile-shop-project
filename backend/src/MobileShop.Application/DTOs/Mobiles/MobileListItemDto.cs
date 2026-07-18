@@ -9,5 +9,6 @@ public class MobileListItemDto
     public string? Color { get; set; }
     public string ConditionGrade { get; set; } = null!;
     public decimal Price { get; set; }
+    public string Status { get; set; } = null!;
     public int? PrimaryImageId { get; set; }
 }

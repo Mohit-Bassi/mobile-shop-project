@@ -19,4 +19,19 @@ public class AccessoryService : IAccessoryService
 
     public Task<AccessoryDetailDto?> GetActiveDetailByIdAsync(int accessoryId, CancellationToken ct) =>
         _repository.GetActiveDetailByIdAsync(accessoryId, ct);
+
+    public Task<PagedResult<AccessoryListItemDto>> GetAdminPagedAsync(AdminAccessoryQueryParameters query, CancellationToken ct) =>
+        _repository.GetAdminPagedAsync(query, ct);
+
+    public Task<AccessoryDetailDto?> GetAdminDetailByIdAsync(int accessoryId, CancellationToken ct) =>
+        _repository.GetAdminDetailByIdAsync(accessoryId, ct);
+
+    public Task<int> CreateAsync(AdminAccessoryRequest request, CancellationToken ct) =>
+        _repository.CreateAsync(request, ct);
+
+    public Task<bool> UpdateAsync(int accessoryId, AdminAccessoryRequest request, CancellationToken ct) =>
+        _repository.UpdateAsync(accessoryId, request, ct);
+
+    public Task<bool> UpdateStatusAsync(int accessoryId, string status, CancellationToken ct) =>
+        _repository.UpdateStatusAsync(accessoryId, status, ct);
 }
