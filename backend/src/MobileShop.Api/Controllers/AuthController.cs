@@ -76,7 +76,10 @@ public class AuthController : ControllerBase
         {
             HttpOnly = true,
             Secure = true,
-            SameSite = SameSiteMode.Strict,
+            // The admin panel is a separate origin making cross-origin XHR calls to this API
+            // (not a same-site top-level navigation), so the cookie must be SameSite=None to be
+            // sent at all — Strict/Lax only apply to same-site requests.
+            SameSite = SameSiteMode.None,
             Expires = expiresAtUtc,
             Path = "/api/v1/auth",
         });
