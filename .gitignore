@@ -2,3 +2,26 @@
 *.log
 node_modules/
 .env
+.env.local
+
+# .NET
+bin/
+obj/
+*.user
+appsettings.*.local.json
+
+# Frontend build output
+dist/
+dist-ssr/
+*.local
+
+# Playwright
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+
+# IDE
+.vs/
+.vscode/
+*.swp
