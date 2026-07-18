@@ -2,8 +2,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MobileShop.Application.Interfaces.Repositories;
+using MobileShop.Application.Interfaces.Services;
 using MobileShop.Infrastructure.Persistence;
 using MobileShop.Infrastructure.Repositories;
+using MobileShop.Infrastructure.Services;
 
 namespace MobileShop.Infrastructure;
 
@@ -35,6 +37,8 @@ public static class DependencyInjection
         services.AddScoped<IAccessoryRepository, AccessoryRepository>();
         services.AddScoped<ICategoryRepository, CategoryRepository>();
         services.AddScoped<IRepairServiceRepository, RepairServiceRepository>();
+
+        services.AddScoped<IImageStorageService, ImageStorageService>();
 
         return services;
     }

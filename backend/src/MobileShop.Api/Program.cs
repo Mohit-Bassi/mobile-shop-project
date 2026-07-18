@@ -11,6 +11,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddProblemDetails();
+builder.Services.AddOutputCache();
 
 if (builder.Environment.IsEnvironment("Testing"))
 {
@@ -43,6 +44,8 @@ if (app.Environment.IsDevelopment())
 app.UseStatusCodePages();
 
 app.UseHttpsRedirection();
+
+app.UseOutputCache();
 
 app.UseAuthorization();
 
