@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MobileShop.Application.Interfaces.Repositories;
 using MobileShop.Application.Interfaces.Services;
+using MobileShop.Infrastructure.Auth;
 using MobileShop.Infrastructure.Persistence;
 using MobileShop.Infrastructure.Repositories;
 using MobileShop.Infrastructure.Services;
@@ -39,6 +40,9 @@ public static class DependencyInjection
         services.AddScoped<IRepairServiceRepository, RepairServiceRepository>();
 
         services.AddScoped<IImageStorageService, ImageStorageService>();
+
+        services.AddScoped<JwtTokenService>();
+        services.AddScoped<IAuthService, AuthService>();
 
         return services;
     }

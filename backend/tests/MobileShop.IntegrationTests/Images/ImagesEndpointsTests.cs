@@ -1,8 +1,11 @@
 using System.Net;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using FluentAssertions;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using MobileShop.Application.DTOs.Auth;
 using MobileShop.Application.DTOs.Images;
 using MobileShop.Domain.Entities;
 using MobileShop.Domain.Enums;
@@ -40,11 +43,32 @@ public class ImagesEndpointsTests : IClassFixture<CustomWebApplicationFactory>
         return mobile.MobileId;
     }
 
+    private async Task<HttpClient> CreateAuthenticatedClientAsync()
+    {
+        const string password = "Correct-Horse-Battery-Staple9!";
+        var email = $"admin-{Guid.NewGuid():N}@test.local";
+
+        using (var scope = _factory.Services.CreateScope())
+        {
+            var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+            var user = new User { Email = email, Role = "Admin", IsActive = true, CreatedAtUtc = DateTime.UtcNow };
+            user.PasswordHash = new PasswordHasher<User>().HashPassword(user, password);
+            context.Users.Add(user);
+            await context.SaveChangesAsync();
+        }
+
+        var client = _factory.CreateClient();
+        var loginResponse = await client.PostAsJsonAsync("/api/v1/auth/login", new LoginRequest { Email = email, Password = password });
+        var body = await loginResponse.Content.ReadFromJsonAsync<LoginResponseDto>();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", body!.AccessToken);
+        return client;
+    }
+
     [Fact]
     public async Task Upload_CreatesImageWithThreeVariants_AndFirstUploadIsPrimary()
     {
         var mobileId = await SeedMobileAsync();
-        var client = _factory.CreateClient();
+        var client = await CreateAuthenticatedClientAsync();
 
         using var content = new MultipartFormDataContent();
         using var fileContent = new ByteArrayContent(CreateSamplePngBytes());
@@ -67,7 +91,7 @@ public class ImagesEndpointsTests : IClassFixture<CustomWebApplicationFactory>
     public async Task GetVariant_ReturnsWebpBytesWithCacheHeaders()
     {
         var mobileId = await SeedMobileAsync();
-        var client = _factory.CreateClient();
+        var client = await CreateAuthenticatedClientAsync();
 
         using var content = new MultipartFormDataContent();
         using var fileContent = new ByteArrayContent(CreateSamplePngBytes());
@@ -101,7 +125,7 @@ public class ImagesEndpointsTests : IClassFixture<CustomWebApplicationFactory>
     public async Task Upload_RejectsUnsupportedContentType()
     {
         var mobileId = await SeedMobileAsync();
-        var client = _factory.CreateClient();
+        var client = await CreateAuthenticatedClientAsync();
 
         using var content = new MultipartFormDataContent();
         using var fileContent = new ByteArrayContent("not an image"u8.ToArray());
@@ -117,7 +141,7 @@ public class ImagesEndpointsTests : IClassFixture<CustomWebApplicationFactory>
     public async Task Delete_ReassignsPrimaryToNextImage()
     {
         var mobileId = await SeedMobileAsync();
-        var client = _factory.CreateClient();
+        var client = await CreateAuthenticatedClientAsync();
 
         async Task<ImageDto> UploadAsync()
         {

@@ -1,3 +1,4 @@
+using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using MobileShop.Application.Interfaces.Services;
 using MobileShop.Application.Services;
@@ -12,6 +13,8 @@ public static class DependencyInjection
         services.AddScoped<IAccessoryService, AccessoryService>();
         services.AddScoped<ICategoryService, CategoryService>();
         services.AddScoped<IRepairServiceService, RepairServiceService>();
+
+        services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly);
 
         return services;
     }

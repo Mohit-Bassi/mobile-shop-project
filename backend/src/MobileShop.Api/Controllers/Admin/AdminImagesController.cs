@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MobileShop.Application.DTOs.Images;
 using MobileShop.Application.Interfaces.Services;
@@ -6,9 +7,9 @@ using MobileShop.Domain.Enums;
 
 namespace MobileShop.Api.Controllers.Admin;
 
-// TODO(auth): decorate with [Authorize(Roles = "Admin")] once JWT auth is wired up (Phase 5).
 [ApiController]
 [Route("api/v1/admin")]
+[Authorize(Roles = "Admin")]
 public class AdminImagesController : ControllerBase
 {
     private const long MaxUploadBytes = 8 * 1024 * 1024;
