@@ -19,9 +19,19 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'] },
     },
   ],
-  webServer: {
-    command: 'npm run dev',
-    url: 'http://localhost:5173',
-    reuseExistingServer: !process.env.CI,
-  },
+  webServer: [
+    {
+      command: 'dotnet run --launch-profile https',
+      cwd: '../../backend/src/MobileShop.Api',
+      url: 'https://localhost:7152/api/v1/categories',
+      ignoreHTTPSErrors: true,
+      reuseExistingServer: !process.env.CI,
+      timeout: 60_000,
+    },
+    {
+      command: 'npm run dev',
+      url: 'http://localhost:5173',
+      reuseExistingServer: !process.env.CI,
+    },
+  ],
 });
