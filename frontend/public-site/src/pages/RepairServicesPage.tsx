@@ -7,7 +7,7 @@ export default function RepairServicesPage() {
 
   return (
     <Box>
-      <Typography variant="h5" component="h1" sx={{ fontWeight: 700 }} gutterBottom>
+      <Typography variant="h5" component="h1" gutterBottom>
         Repair Services
       </Typography>
       <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
@@ -26,17 +26,17 @@ export default function RepairServicesPage() {
         <Grid container spacing={2} sx={{ mb: 4 }}>
           {services.map((service) => (
             <Grid key={service.repairServiceId} size={{ xs: 12, sm: 6, md: 4 }}>
-              <Card variant="outlined" sx={{ height: '100%' }}>
-                <CardContent>
+              <Card sx={{ height: '100%' }}>
+                <CardContent sx={{ p: 3 }}>
                   <Typography variant="h6" gutterBottom>
                     {service.title}
                   </Typography>
                   {service.description && (
-                    <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                    <Typography variant="body2" color="text.secondary" sx={{ mb: 1.5 }}>
                       {service.description}
                     </Typography>
                   )}
-                  <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
+                  <Typography variant="subtitle1" sx={{ fontWeight: 800, color: 'secondary.dark' }}>
                     {service.priceFrom ? `From ₹${service.priceFrom.toLocaleString()}` : 'Contact for quote'}
                   </Typography>
                   {service.estimatedTurnaround && (
@@ -51,7 +51,7 @@ export default function RepairServicesPage() {
         </Grid>
       )}
 
-      <Paper variant="outlined" sx={{ p: 2, maxWidth: 480 }}>
+      <Paper variant="outlined" sx={{ p: 2.5, maxWidth: 480, borderRadius: 3 }}>
         <Typography variant="h6" gutterBottom>
           Ask about a repair
         </Typography>

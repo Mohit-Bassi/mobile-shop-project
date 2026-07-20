@@ -7,9 +7,12 @@ interface ProductImageProps {
   variant?: 'thumbnail' | 'medium' | 'full';
   alt: string;
   aspectRatio?: string;
+  rounded?: boolean;
 }
 
-export default function ProductImage({ imageId, variant = 'medium', alt, aspectRatio = '4 / 3' }: ProductImageProps) {
+export default function ProductImage({ imageId, variant = 'medium', alt, aspectRatio = '4 / 3', rounded = true }: ProductImageProps) {
+  const borderRadius = rounded ? 2 : 0;
+
   if (imageId === null) {
     return (
       <Box
@@ -18,9 +21,9 @@ export default function ProductImage({ imageId, variant = 'medium', alt, aspectR
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          bgcolor: 'grey.100',
-          borderRadius: 1,
-          color: 'grey.400',
+          background: 'linear-gradient(180deg, #EDEAE2 0%, #E2DED2 100%)',
+          borderRadius,
+          color: '#B7AF9E',
         }}
       >
         <PhoneIphoneIcon sx={{ fontSize: 48 }} />
@@ -34,7 +37,7 @@ export default function ProductImage({ imageId, variant = 'medium', alt, aspectR
       src={imageUrl(imageId, variant)}
       alt={alt}
       loading="lazy"
-      sx={{ width: '100%', aspectRatio, objectFit: 'cover', borderRadius: 1, display: 'block' }}
+      sx={{ width: '100%', aspectRatio, objectFit: 'cover', borderRadius, display: 'block' }}
     />
   );
 }

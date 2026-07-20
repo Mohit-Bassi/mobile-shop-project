@@ -10,6 +10,7 @@ import {
   Grid,
   MenuItem,
   Pagination,
+  Paper,
   Stack,
   TextField,
   Typography,
@@ -33,48 +34,50 @@ export default function MobilesListPage() {
 
   return (
     <Box>
-      <Typography variant="h5" component="h1" sx={{ fontWeight: 700 }} gutterBottom>
+      <Typography variant="h5" component="h1" gutterBottom>
         Mobiles
       </Typography>
 
-      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ mb: 3 }}>
-        <TextField
-          label="Brand"
-          size="small"
-          fullWidth
-          value={filters.brand ?? ''}
-          onChange={(e) => updateFilter({ brand: e.target.value || undefined })}
-        />
-        <TextField
-          select
-          label="Condition"
-          size="small"
-          fullWidth
-          value={filters.condition ?? ''}
-          onChange={(e) => updateFilter({ condition: e.target.value || undefined })}
-        >
-          <MenuItem value="">Any</MenuItem>
-          {CONDITIONS.map((c) => (
-            <MenuItem key={c} value={c}>
-              {c}
-            </MenuItem>
-          ))}
-        </TextField>
-        <TextField
-          select
-          label="Sort"
-          size="small"
-          fullWidth
-          value={filters.sort}
-          onChange={(e) => updateFilter({ sort: e.target.value })}
-        >
-          {SORT_OPTIONS.map((opt) => (
-            <MenuItem key={opt.value} value={opt.value}>
-              {opt.label}
-            </MenuItem>
-          ))}
-        </TextField>
-      </Stack>
+      <Paper variant="outlined" sx={{ p: 2, mb: 3, borderRadius: 3 }}>
+        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+          <TextField
+            label="Brand"
+            size="small"
+            fullWidth
+            value={filters.brand ?? ''}
+            onChange={(e) => updateFilter({ brand: e.target.value || undefined })}
+          />
+          <TextField
+            select
+            label="Condition"
+            size="small"
+            fullWidth
+            value={filters.condition ?? ''}
+            onChange={(e) => updateFilter({ condition: e.target.value || undefined })}
+          >
+            <MenuItem value="">Any</MenuItem>
+            {CONDITIONS.map((c) => (
+              <MenuItem key={c} value={c}>
+                {c}
+              </MenuItem>
+            ))}
+          </TextField>
+          <TextField
+            select
+            label="Sort"
+            size="small"
+            fullWidth
+            value={filters.sort}
+            onChange={(e) => updateFilter({ sort: e.target.value })}
+          >
+            {SORT_OPTIONS.map((opt) => (
+              <MenuItem key={opt.value} value={opt.value}>
+                {opt.label}
+              </MenuItem>
+            ))}
+          </TextField>
+        </Stack>
+      </Paper>
 
       {isLoading && (
         <Box sx={{ display: 'flex', justifyContent: 'center', py: 6 }}>
@@ -93,21 +96,26 @@ export default function MobilesListPage() {
           <Grid container spacing={2}>
             {data.items.map((mobile) => (
               <Grid key={mobile.mobileId} size={{ xs: 6, sm: 4, md: 3 }}>
-                <Card variant="outlined" sx={{ height: '100%' }}>
-                  <CardActionArea component={RouterLink} to={`/mobiles/${mobile.mobileId}`}>
-                    <ProductImage imageId={mobile.primaryImageId} variant="medium" alt={`${mobile.brand} ${mobile.model}`} />
+                <Card sx={{ height: '100%' }}>
+                  <CardActionArea component={RouterLink} to={`/mobiles/${mobile.mobileId}`} sx={{ height: '100%', alignItems: 'stretch' }}>
+                    <ProductImage
+                      imageId={mobile.primaryImageId}
+                      variant="medium"
+                      alt={`${mobile.brand} ${mobile.model}`}
+                      rounded={false}
+                    />
                     <CardContent>
                       <Typography variant="subtitle2" noWrap>
                         {mobile.brand} {mobile.model}
                       </Typography>
-                      <Typography variant="body2" color="text.secondary">
+                      <Typography variant="body2" color="text.secondary" gutterBottom>
                         {mobile.storage ?? '—'}
                       </Typography>
                       <Stack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'center', mt: 1 }}>
-                        <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
+                        <Typography variant="subtitle1" sx={{ fontWeight: 800, color: 'secondary.dark' }}>
                           ₹{mobile.price.toLocaleString()}
                         </Typography>
-                        <Chip label={mobile.conditionGrade} size="small" />
+                        <Chip label={mobile.conditionGrade} size="small" color="primary" variant="outlined" />
                       </Stack>
                     </CardContent>
                   </CardActionArea>

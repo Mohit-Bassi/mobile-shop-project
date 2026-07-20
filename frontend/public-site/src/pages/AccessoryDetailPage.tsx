@@ -32,21 +32,21 @@ export default function AccessoryDetailPage() {
         <Typography color="text.primary">{accessory.name}</Typography>
       </Breadcrumbs>
 
-      <Grid container spacing={4}>
+      <Grid container spacing={5}>
         <Grid size={{ xs: 12, sm: 6 }}>
           <ProductImage imageId={primaryImageId} variant="full" alt={accessory.name} aspectRatio="1 / 1" />
         </Grid>
 
         <Grid size={{ xs: 12, sm: 6 }}>
-          <Typography variant="h5" sx={{ fontWeight: 700 }}>
+          <Typography variant="h5">
             {accessory.name}
           </Typography>
-          <Chip label={accessory.categoryName} size="small" sx={{ my: 1 }} />
-          <Typography variant="h4" color="primary" sx={{ fontWeight: 700, my: 2 }}>
+          <Chip label={accessory.categoryName} size="small" color="primary" sx={{ my: 1.5 }} />
+          <Typography variant="h4" sx={{ fontWeight: 800, color: 'secondary.dark', my: 2 }}>
             ₹{accessory.price.toLocaleString()}
           </Typography>
           {accessory.description && (
-            <Typography variant="body1" sx={{ mb: 2 }}>
+            <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>
               {accessory.description}
             </Typography>
           )}
@@ -66,7 +66,7 @@ export default function AccessoryDetailPage() {
 
           <Divider sx={{ my: 3 }} />
 
-          <Paper variant="outlined" sx={{ p: 2 }}>
+          <Paper variant="outlined" sx={{ p: 2.5, borderRadius: 3 }}>
             <Typography variant="h6" gutterBottom>
               Interested in this accessory?
             </Typography>

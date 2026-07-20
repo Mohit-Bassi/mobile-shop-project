@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { Box, Button, CircularProgress, IconButton, Stack, Tooltip, Typography } from '@mui/material';
+import { Alert, Box, Button, CircularProgress, IconButton, Stack, Tooltip, Typography } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import StarIcon from '@mui/icons-material/Star';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
@@ -76,6 +76,12 @@ export default function ImageManager({ ownerType, ownerId, imageIds, primaryImag
       >
         Upload photo
       </Button>
+
+      {uploadMutation.isError && (
+        <Alert severity="error" sx={{ mt: 2 }}>
+          Upload failed. Use a JPEG, PNG, or WebP file under 8MB.
+        </Alert>
+      )}
     </Box>
   );
 }

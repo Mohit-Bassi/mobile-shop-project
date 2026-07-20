@@ -9,6 +9,7 @@ import {
   Grid,
   MenuItem,
   Pagination,
+  Paper,
   Stack,
   TextField,
   Typography,
@@ -35,41 +36,43 @@ export default function AccessoriesListPage() {
 
   return (
     <Box>
-      <Typography variant="h5" component="h1" sx={{ fontWeight: 700 }} gutterBottom>
+      <Typography variant="h5" component="h1" gutterBottom>
         Accessories
       </Typography>
 
-      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ mb: 3 }}>
-        <TextField
-          select
-          label="Category"
-          size="small"
-          fullWidth
-          value={filters.categoryId ?? ''}
-          onChange={(e) => updateFilter({ categoryId: e.target.value ? Number(e.target.value) : undefined })}
-        >
-          <MenuItem value="">All categories</MenuItem>
-          {categories?.map((c) => (
-            <MenuItem key={c.categoryId} value={c.categoryId}>
-              {c.name}
-            </MenuItem>
-          ))}
-        </TextField>
-        <TextField
-          label="Compatible brand"
-          size="small"
-          fullWidth
-          value={filters.compatibleBrand ?? ''}
-          onChange={(e) => updateFilter({ compatibleBrand: e.target.value || undefined })}
-        />
-        <TextField
-          label="Compatible model"
-          size="small"
-          fullWidth
-          value={filters.compatibleModel ?? ''}
-          onChange={(e) => updateFilter({ compatibleModel: e.target.value || undefined })}
-        />
-      </Stack>
+      <Paper variant="outlined" sx={{ p: 2, mb: 3, borderRadius: 3 }}>
+        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+          <TextField
+            select
+            label="Category"
+            size="small"
+            fullWidth
+            value={filters.categoryId ?? ''}
+            onChange={(e) => updateFilter({ categoryId: e.target.value ? Number(e.target.value) : undefined })}
+          >
+            <MenuItem value="">All categories</MenuItem>
+            {categories?.map((c) => (
+              <MenuItem key={c.categoryId} value={c.categoryId}>
+                {c.name}
+              </MenuItem>
+            ))}
+          </TextField>
+          <TextField
+            label="Compatible brand"
+            size="small"
+            fullWidth
+            value={filters.compatibleBrand ?? ''}
+            onChange={(e) => updateFilter({ compatibleBrand: e.target.value || undefined })}
+          />
+          <TextField
+            label="Compatible model"
+            size="small"
+            fullWidth
+            value={filters.compatibleModel ?? ''}
+            onChange={(e) => updateFilter({ compatibleModel: e.target.value || undefined })}
+          />
+        </Stack>
+      </Paper>
 
       {isLoading && (
         <Box sx={{ display: 'flex', justifyContent: 'center', py: 6 }}>
@@ -88,9 +91,9 @@ export default function AccessoriesListPage() {
           <Grid container spacing={2}>
             {data.items.map((accessory) => (
               <Grid key={accessory.accessoryId} size={{ xs: 6, sm: 4, md: 3 }}>
-                <Card variant="outlined" sx={{ height: '100%' }}>
-                  <CardActionArea component={RouterLink} to={`/accessories/${accessory.accessoryId}`}>
-                    <ProductImage imageId={accessory.primaryImageId} variant="medium" alt={accessory.name} />
+                <Card sx={{ height: '100%' }}>
+                  <CardActionArea component={RouterLink} to={`/accessories/${accessory.accessoryId}`} sx={{ height: '100%', alignItems: 'stretch' }}>
+                    <ProductImage imageId={accessory.primaryImageId} variant="medium" alt={accessory.name} rounded={false} />
                     <CardContent>
                       <Typography variant="subtitle2" noWrap>
                         {accessory.name}
@@ -98,7 +101,7 @@ export default function AccessoriesListPage() {
                       <Typography variant="body2" color="text.secondary" gutterBottom>
                         {accessory.categoryName}
                       </Typography>
-                      <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
+                      <Typography variant="subtitle1" sx={{ fontWeight: 800, color: 'secondary.dark' }}>
                         ₹{accessory.price.toLocaleString()}
                       </Typography>
                     </CardContent>

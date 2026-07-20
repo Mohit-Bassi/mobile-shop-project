@@ -34,11 +34,11 @@ export default function MobileDetailPage() {
         </Typography>
       </Breadcrumbs>
 
-      <Grid container spacing={4}>
+      <Grid container spacing={5}>
         <Grid size={{ xs: 12, sm: 6 }}>
           <ProductImage imageId={primaryImageId} variant="full" alt={`${mobile.brand} ${mobile.model}`} aspectRatio="1 / 1" />
           {mobile.imageIds.length > 1 && (
-            <Stack direction="row" spacing={1} sx={{ mt: 1, overflowX: 'auto' }}>
+            <Stack direction="row" spacing={1} sx={{ mt: 1.5, overflowX: 'auto' }}>
               {mobile.imageIds.map((imgId) => (
                 <Box key={imgId} sx={{ width: 64, flexShrink: 0 }}>
                   <ProductImage imageId={imgId} variant="thumbnail" alt="" aspectRatio="1 / 1" />
@@ -49,26 +49,26 @@ export default function MobileDetailPage() {
         </Grid>
 
         <Grid size={{ xs: 12, sm: 6 }}>
-          <Typography variant="h5" sx={{ fontWeight: 700 }}>
+          <Typography variant="h5">
             {mobile.brand} {mobile.model}
           </Typography>
-          <Stack direction="row" spacing={1} sx={{ my: 1 }}>
+          <Stack direction="row" spacing={1} sx={{ my: 1.5 }}>
             <Chip label={mobile.conditionGrade} color="primary" size="small" />
-            {mobile.storage && <Chip label={mobile.storage} size="small" />}
-            {mobile.color && <Chip label={mobile.color} size="small" />}
+            {mobile.storage && <Chip label={mobile.storage} size="small" variant="outlined" />}
+            {mobile.color && <Chip label={mobile.color} size="small" variant="outlined" />}
           </Stack>
-          <Typography variant="h4" color="primary" sx={{ fontWeight: 700, my: 2 }}>
+          <Typography variant="h4" sx={{ fontWeight: 800, color: 'secondary.dark', my: 2 }}>
             ₹{mobile.price.toLocaleString()}
           </Typography>
           {mobile.description && (
-            <Typography variant="body1" sx={{ mb: 3 }}>
+            <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
               {mobile.description}
             </Typography>
           )}
 
           <Divider sx={{ my: 3 }} />
 
-          <Paper variant="outlined" sx={{ p: 2 }}>
+          <Paper variant="outlined" sx={{ p: 2.5, borderRadius: 3 }}>
             <Typography variant="h6" gutterBottom>
               Interested in this phone?
             </Typography>

@@ -29,7 +29,7 @@ export default function Layout() {
   return (
     <>
       <AppBar position="sticky" color="primary" enableColorOnDark>
-        <Toolbar>
+        <Toolbar sx={{ minHeight: 68 }}>
           <IconButton
             color="inherit"
             edge="start"
@@ -39,34 +39,70 @@ export default function Layout() {
           >
             <MenuIcon />
           </IconButton>
-          <PhoneIphoneIcon sx={{ mr: 1 }} />
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: 36,
+              height: 36,
+              borderRadius: 2,
+              bgcolor: 'rgba(255,255,255,0.12)',
+              mr: 1.5,
+            }}
+          >
+            <PhoneIphoneIcon fontSize="small" />
+          </Box>
           <Typography
-            variant="h6"
             component={RouterLink}
             to="/"
-            sx={{ flexGrow: 1, color: 'inherit', textDecoration: 'none', fontWeight: 600 }}
+            sx={{
+              flexGrow: 1,
+              color: 'inherit',
+              textDecoration: 'none',
+              fontFamily: '"Plus Jakarta Sans", sans-serif',
+              fontWeight: 700,
+              fontSize: '1.15rem',
+              letterSpacing: '-0.01em',
+            }}
           >
             Mobile Shop
           </Typography>
-          <Stack direction="row" spacing={1} sx={{ display: { xs: 'none', sm: 'flex' } }}>
-            {NAV_LINKS.map((link) => (
-              <Box
-                key={link.to}
-                component={RouterLink}
-                to={link.to}
-                sx={{
-                  color: 'inherit',
-                  textDecoration: 'none',
-                  px: 1.5,
-                  py: 1,
-                  borderRadius: 1,
-                  fontWeight: location.pathname.startsWith(link.to) ? 700 : 400,
-                  bgcolor: location.pathname.startsWith(link.to) ? 'rgba(255,255,255,0.15)' : 'transparent',
-                }}
-              >
-                {link.label}
-              </Box>
-            ))}
+          <Stack direction="row" spacing={0.5} sx={{ display: { xs: 'none', sm: 'flex' } }}>
+            {NAV_LINKS.map((link) => {
+              const active = location.pathname.startsWith(link.to);
+              return (
+                <Box
+                  key={link.to}
+                  component={RouterLink}
+                  to={link.to}
+                  sx={{
+                    position: 'relative',
+                    color: 'inherit',
+                    textDecoration: 'none',
+                    px: 1.75,
+                    py: 1,
+                    fontWeight: active ? 700 : 500,
+                    opacity: active ? 1 : 0.85,
+                    '&:hover': { opacity: 1 },
+                    '&::after': {
+                      content: '""',
+                      position: 'absolute',
+                      left: 14,
+                      right: 14,
+                      bottom: 6,
+                      height: 2,
+                      borderRadius: 1,
+                      bgcolor: 'secondary.main',
+                      opacity: active ? 1 : 0,
+                      transition: 'opacity 0.15s ease',
+                    },
+                  }}
+                >
+                  {link.label}
+                </Box>
+              );
+            })}
           </Stack>
         </Toolbar>
       </AppBar>
@@ -83,14 +119,21 @@ export default function Layout() {
         </Box>
       </Drawer>
 
-      <Container maxWidth="lg" sx={{ py: 3 }}>
+      <Container maxWidth="lg" sx={{ py: { xs: 3, sm: 4 }, minHeight: '70vh' }}>
         <Outlet />
       </Container>
 
-      <Box component="footer" sx={{ py: 3, textAlign: 'center', color: 'text.secondary' }}>
-        <Typography variant="body2">
-          Mobile Shop &mdash; visit us in person to buy, sell, or repair your device.
-        </Typography>
+      <Box component="footer" sx={{ mt: 4, borderTop: '1px solid', borderColor: 'divider', bgcolor: 'background.paper' }}>
+        <Container maxWidth="lg" sx={{ py: 4 }}>
+          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1} sx={{ justifyContent: 'space-between', alignItems: { sm: 'center' } }}>
+            <Typography variant="subtitle2" sx={{ fontFamily: '"Plus Jakarta Sans", sans-serif' }}>
+              Mobile Shop
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Visit us in person to buy, sell, or repair your device &mdash; no online payments.
+            </Typography>
+          </Stack>
+        </Container>
       </Box>
     </>
   );
