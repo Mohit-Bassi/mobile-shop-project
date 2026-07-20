@@ -1,0 +1,61 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/protect-files.sh",
+            "statusMessage": "Checking file protection rules..."
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/pre-commit-build.sh",
+            "if": "Bash(git commit *)",
+            "timeout": 300,
+            "statusMessage": "Running pre-commit build checks (backend + frontends)..."
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "f=$(node -e 'let d=\"\";process.stdin.on(\"data\",c=>d+=c);process.stdin.on(\"end\",()=>{try{const j=JSON.parse(d);const f=(j.tool_input&&j.tool_input.file_path)||(j.tool_response&&j.tool_response.filePath)||\"\";process.stdout.write(f);}catch(e){}});'); rel=\"${f#$PWD/}\"; case \"$rel\" in *.ts|*.tsx|*.js|*.jsx) npx --yes prettier --write \"$rel\";; *.cs) dotnet format backend/MobileShop.sln --include \"$rel\";; esac 2>/dev/null || true",
+            "statusMessage": "Auto-formatting changed file..."
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "shell": "powershell",
+            "command": "$j = [Console]::In.ReadToEnd() | ConvertFrom-Json; $msg = if ($j.message) { $j.message } else { \"Claude Code needs your attention\" }; Add-Type -AssemblyName System.Windows.Forms; $n = New-Object System.Windows.Forms.NotifyIcon; $n.Icon = [System.Drawing.SystemIcons]::Information; $n.Visible = $true; $n.ShowBalloonTip(4000, \"Claude Code\", $msg, [System.Windows.Forms.ToolTipIcon]::Info); Start-Sleep -Seconds 5; $n.Dispose()"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo \"Backend: .NET API in /backend. Frontend: React apps in /frontend/public-site and /frontend/admin-panel. Run dotnet test before commits, and npm run build before pushing frontend changes.\""
+          }
+        ]
+      }
+    ]
+  }
+}

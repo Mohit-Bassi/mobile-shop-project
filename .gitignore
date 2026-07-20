@@ -1,4 +1,7 @@
-.claude/
+.claude/*
+!.claude/settings.json
+!.claude/hooks/
+!.claude/skills/
 *.log
 node_modules/
 .env
