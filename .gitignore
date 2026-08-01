@@ -12,6 +12,8 @@ bin/
 obj/
 *.user
 appsettings.*.local.json
+backend/src/MobileShop.Api/appsettings.json
+backend/src/MobileShop.Api/appsettings.Development.json
 
 # Frontend build output
 dist/
