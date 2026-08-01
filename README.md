@@ -31,8 +31,8 @@ backend/
     MobileShop.UnitTests/
     MobileShop.IntegrationTests/
 frontend/
-  public-site/    # React app — storefront (port 5173)
-  admin-panel/    # React app — admin (port 5174)
+  public-site/    # React app — storefront
+  admin-panel/    # React app — admin
 ```
 
 ## Testing

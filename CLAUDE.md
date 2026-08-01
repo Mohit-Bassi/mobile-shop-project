@@ -21,8 +21,8 @@ backend/
     MobileShop.UnitTests/      # xUnit, mocked dependencies, no DB
     MobileShop.IntegrationTests/ # xUnit + WebApplicationFactory, SQLite in-memory
 frontend/
-  public-site/  # Anonymous storefront (port 5173)
-  admin-panel/  # JWT-protected admin SPA (port 5174)
+  public-site/  # Anonymous storefront
+  admin-panel/  # JWT-protected admin SPA
 ```
 
 ## Conventions
