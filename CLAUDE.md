@@ -25,38 +25,10 @@ frontend/
   admin-panel/  # JWT-protected admin SPA (port 5174)
 ```
 
-## Commands
+## Conventions
 
-### Backend (`backend/`)
-
-```bash
-dotnet build                          # build whole solution
-dotnet test                           # run all tests (unit + integration)
-dotnet test tests/MobileShop.UnitTests
-dotnet test tests/MobileShop.IntegrationTests
-dotnet test --filter "FullyQualifiedName~MobilesEndpointsTests"   # single test class
-dotnet run --project src/MobileShop.Api --launch-profile https    # run API on https://localhost:7152
-```
-
-EF Core migrations (run from `backend/`):
-```bash
-dotnet ef migrations add <Name> --project src/MobileShop.Infrastructure --startup-project src/MobileShop.Api --output-dir Persistence/Migrations
-dotnet ef database update --project src/MobileShop.Infrastructure --startup-project src/MobileShop.Api
-```
-
-Required user-secrets before first run (see README.md for full list): `ConnectionStrings:DefaultConnection`, `Jwt:SigningKey`, `AdminSeed:Email`, `AdminSeed:Password`. On first Development run, `Program.cs` applies migrations and seeds the admin user + sample catalog data automatically (`MobileShop.Infrastructure.Persistence.DbSeeder`).
-
-### Frontend (`frontend/public-site/` or `frontend/admin-panel/`)
-
-```bash
-npm install
-npm run dev      # vite dev server
-npm run build     # tsc -b && vite build — always run this to typecheck, there is no separate `tsc --noEmit` script
-npm run lint      # oxlint
-npx playwright test    # E2E — see Testing notes below
-```
-
-Each app needs a local `.env` (gitignored): `VITE_API_BASE_URL=https://localhost:7152/api/v1`.
+- Frontend build (`npm run build`) is `tsc -b && vite build` — there is no separate `tsc --noEmit` script, so a build is the typecheck.
+- `Program.cs` applies EF Core migrations and seeds the admin user + sample catalog data automatically on first Development run (`MobileShop.Infrastructure.Persistence.DbSeeder`).
 
 ## Architecture
 

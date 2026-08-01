@@ -35,58 +35,7 @@ frontend/
   admin-panel/    # React app — admin (port 5174)
 ```
 
-## Getting Started
+## Testing
 
-### Prerequisites
-
-- .NET 9 SDK, Node 20+, SQL Server LocalDB (or any SQL Server instance)
-- Trust the local dev HTTPS cert once: `dotnet dev-certs https --trust`
-
-### Backend
-
-```bash
-cd backend
-dotnet user-secrets set "ConnectionStrings:DefaultConnection" "Server=(localdb)\MSSQLLocalDB;Database=MobileShopDb;Trusted_Connection=True;MultipleActiveResultSets=true;TrustServerCertificate=True" --project src/MobileShop.Api
-dotnet user-secrets set "Jwt:SigningKey" "<a long random string>" --project src/MobileShop.Api
-dotnet user-secrets set "AdminSeed:Email" "admin@mobileshop.local" --project src/MobileShop.Api
-dotnet user-secrets set "AdminSeed:Password" "<a strong password>" --project src/MobileShop.Api
-
-dotnet run --project src/MobileShop.Api --launch-profile https
-```
-
-On first run in Development, this applies EF Core migrations and seeds the admin user (from the secrets above) plus sample catalog data. Swagger UI is at `/swagger`.
-
-Run backend tests:
-
-```bash
-dotnet test
-```
-
-### Frontend
-
-Each app needs a `.env` (gitignored) pointing at the API:
-
-```
-VITE_API_BASE_URL=https://localhost:7152/api/v1
-```
-
-```bash
-cd frontend/public-site && npm install && npm run dev   # http://localhost:5173
-cd frontend/admin-panel && npm install && npm run dev   # http://localhost:5174
-```
-
-### End-to-end tests (Playwright)
-
-Each app's `playwright.config.ts` starts the backend API (and, for admin-panel, the public-site too) automatically — just run:
-
-```bash
-cd frontend/public-site && npx playwright test
-```
-
-```bash
-# admin-panel E2E logs in as the seeded admin, so the password must be supplied out-of-band
-# (never hardcode it in the test files):
-cd frontend/admin-panel && E2E_ADMIN_PASSWORD='<the AdminSeed:Password value>' npx playwright test
-```
-
-The admin-panel suite runs with a single worker and shares one authenticated browser context per spec file — the refresh token is single-use/rotating, so parallel contexts reloading the same session would invalidate each other, and login itself is rate-limited.
+- Backend: xUnit unit tests plus `WebApplicationFactory`-based integration tests against a SQLite in-memory database.
+- Frontend: Playwright end-to-end tests on both apps, exercising real browse/filter/CRUD/auth flows against a running backend.
